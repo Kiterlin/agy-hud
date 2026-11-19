@@ -35,6 +35,7 @@ def sample_payload(width: int = 120) -> dict:
         "quota": {
             "gemini-5h": {"remaining_fraction": 0.852, "reset_in_seconds": 11400},
             "gemini-weekly": {"remaining_fraction": 0.684, "reset_in_seconds": 515336},
+            "gemini-argon-wtu-weekly": {"remaining_fraction": 0.941, "reset_in_seconds": 604458},
             "3p-5h": {"remaining_fraction": 0.14, "reset_in_seconds": 3900},
             "3p-weekly": {"remaining_fraction": 0.42, "reset_in_seconds": 259200},
         },
@@ -112,6 +113,24 @@ class TestRender(unittest.TestCase):
         self.assertIn("14%", plain)  # 3p-5h selected
         self.assertIn("⚠ confirm", plain)
         self.assertIn("sandbox", plain)
+
+    def test_argon_switches_to_dedicated_wtu_weekly_bucket(self) -> None:
+        cfg = copy.deepcopy(DEFAULT_CONFIG)
+        payload = sample_payload(120)
+        payload["model"] = {"id": "gemini-4-argon-high", "display_name": "Gemini 4 Argon (High)", "effort": "high"}
+        lines = render_hud(
+            payload,
+            cfg,
+            transcript_summary=TranscriptSummary(),
+            git_info_override=GitInfo(branch="main"),
+            use_git_override=True,
+        )
+        plain = "\n".join(strip_ansi(ln) for ln in lines)
+        self.assertIn("[Gemini 4 Argon ◑ high]", plain)
+        # Argon uses gemini-argon-wtu-weekly (94%) and has no 5h bucket
+        self.assertIn("94%", plain)
+        self.assertNotIn("85%", plain)
+        self.assertNotIn("68%", plain)
 
 
 if __name__ == "__main__":

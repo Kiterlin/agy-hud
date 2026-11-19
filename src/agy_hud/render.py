@@ -175,10 +175,48 @@ def build_project_part(
     return " ".join(parts)
 
 
+MODEL_SUBFAMILY_TOKENS = (
+    "argon",
+    "neon",
+    "hydrogen",
+    "flash",
+    "opus",
+    "sonnet",
+    "haiku",
+    "gpt",
+)
+
+
+def _is_5h_key(key: str) -> bool:
+    low = key.lower()
+    return low.endswith("-5h") or "-5h-" in low
+
+
+def _is_weekly_key(key: str) -> bool:
+    low = key.lower()
+    return "week" in low or low.endswith("-7d") or "-7d-" in low
+
+
 def select_quota_keys(quota: dict[str, Any], clean_name: str, model_id: str) -> tuple[str | None, str | None]:
     if not isinstance(quota, dict) or not quota:
         return None, None
     probe = f"{clean_name} {model_id}".lower()
+
+    # Map "Orchestrator (Argon)" / "gemini-pro-orchestrator-g1-pro" to argon bucket
+    active_tokens = [tok for tok in MODEL_SUBFAMILY_TOKENS if tok in probe]
+    if "g1-pro" in probe and "argon" not in active_tokens:
+        active_tokens.insert(0, "argon")
+
+    # 1. Check for a model-subfamily specific quota pool first (e.g. gemini-argon-wtu-weekly)
+    for tok in active_tokens:
+        matching_keys = [k for k in quota if tok in k.lower()]
+        if matching_keys:
+            k5 = next((k for k in matching_keys if _is_5h_key(k)), None)
+            k7 = next((k for k in matching_keys if _is_weekly_key(k)), None)
+            if k5 or k7:
+                return k5, k7
+
+    # 2. Fall back to provider-group buckets (3P vs standard Gemini)
     is_3p = any(k in probe for k in ("3p", "claude", "gpt", "sonnet", "opus", "haiku", "o1", "o3", "o4"))
     if is_3p:
         k5 = "3p-5h" if "3p-5h" in quota else ("gemini-5h" if "gemini-5h" in quota else None)
@@ -188,9 +226,9 @@ def select_quota_keys(quota: dict[str, Any], clean_name: str, model_id: str) -> 
         k7 = "gemini-weekly" if "gemini-weekly" in quota else ("3p-weekly" if "3p-weekly" in quota else None)
 
     if not k5:
-        k5 = next((k for k in quota if k.endswith("-5h")), None)
+        k5 = next((k for k in quota if _is_5h_key(k)), None)
     if not k7:
-        k7 = next((k for k in quota if "week" in k or k.endswith("-7d")), None)
+        k7 = next((k for k in quota if _is_weekly_key(k)), None)
     return k5, k7
 
 
@@ -497,8 +535,11 @@ def _build_telemetry_lines(
         lines.append(ctx_row)
 
     q5_aligned = render_quota_entry(lbl_5h, q5_item, display, lang, theme, bar_width=bar_w, label_width=align_w, pct_pad=3)
-    q7_pair = render_quota_entry(lbl_7d, q7_item, display, lang, theme, bar_width=bar_w)
-    quota_combined = _join([q5_aligned, q7_pair], sep)
+    if q5_aligned:
+        q7_pair = render_quota_entry(lbl_7d, q7_item, display, lang, theme, bar_width=bar_w)
+        quota_combined = _join([q5_aligned, q7_pair], sep)
+    else:
+        quota_combined = render_quota_entry(lbl_7d, q7_item, display, lang, theme, bar_width=bar_w, label_width=align_w, pct_pad=3)
     if quota_combined and visible_width(quota_combined) <= max_w:
         lines.append(quota_combined)
         return lines
