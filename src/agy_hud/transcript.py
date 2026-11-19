@@ -96,10 +96,11 @@ def resolve_transcript_path(data: dict[str, Any]) -> Path | None:
     candidates: list[Path] = []
     if raw:
         candidates.append(Path(raw))
-        if "/.gemini/antigravity/" in raw:
-            candidates.append(Path(raw.replace("/.gemini/antigravity/", "/.gemini/antigravity-cli/")))
-        elif "/.gemini/antigravity-cli/" in raw:
-            candidates.append(Path(raw.replace("/.gemini/antigravity-cli/", "/.gemini/antigravity/")))
+        norm = raw.replace("\\", "/")
+        if "/.gemini/antigravity/" in norm:
+            candidates.append(Path(norm.replace("/.gemini/antigravity/", "/.gemini/antigravity-cli/")))
+        elif "/.gemini/antigravity-cli/" in norm:
+            candidates.append(Path(norm.replace("/.gemini/antigravity-cli/", "/.gemini/antigravity/")))
 
     conv_id = str(data.get("conversation_id") or data.get("session_id") or "").strip()
     if conv_id:

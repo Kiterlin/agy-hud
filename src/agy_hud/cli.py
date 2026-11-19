@@ -33,13 +33,25 @@ from agy_hud.themes import detect_color_scheme, resolve_theme
 from agy_hud.transcript import AgentActivity, TranscriptSummary
 
 
+def _ensure_utf8_stdio() -> None:
+    """Ensure stdin/stdout/stderr use UTF-8 on Windows (avoiding cp1252/cp936 UnicodeEncodeError)."""
+    for stream in (sys.stdin, sys.stdout, sys.stderr):
+        reconf = getattr(stream, "reconfigure", None)
+        if callable(reconf):
+            try:
+                reconf(encoding="utf-8", errors="replace")
+            except Exception:
+                pass
+
+
 def _resolve_launcher_command() -> str:
     """Resolve the shell command written into Antigravity CLI settings.json."""
     pkg_root = Path(__file__).resolve().parents[2]
     launcher = pkg_root / "bin" / "agy-hud.py"
-    py_bin = "python" if platform.system().lower() == "windows" else "python3"
+    is_win = platform.system().lower() == "windows"
+    py_bin = "python" if is_win else "python3"
     if launcher.is_file():
-        return f'{py_bin} "{launcher}"' if " " in str(launcher) else f"{py_bin} {launcher}"
+        return f'{py_bin} "{launcher}"' if (" " in str(launcher) or is_win) else f"{py_bin} {launcher}"
     return f"{py_bin} -m agy_hud"
 
 
@@ -353,6 +365,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    _ensure_utf8_stdio()
     # Fast path when invoked by Antigravity CLI with no arguments
     raw_argv = sys.argv[1:] if argv is None else argv
     if not raw_argv:

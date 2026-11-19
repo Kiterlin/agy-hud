@@ -20,6 +20,8 @@ class TestCLI(unittest.TestCase):
             [sys.executable, str(LAUNCHER), *args],
             input=stdin_text,
             text=True,
+            encoding="utf-8",
+            errors="replace",
             capture_output=True,
             env=env,
             check=False,

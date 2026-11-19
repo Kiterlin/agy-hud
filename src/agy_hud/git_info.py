@@ -20,15 +20,18 @@ class GitInfo:
 def format_project_path(cwd: str, levels: int = 1) -> str:
     if not cwd:
         return ""
-    norm = os.path.normpath(cwd)
-    home = os.path.normpath(str(Path.home()))
-    if norm == home:
+    home_norm = str(Path.home()).replace("\\", "/").rstrip("/")
+    cwd_norm = cwd.replace("\\", "/").rstrip("/")
+    if cwd_norm.lower() == home_norm.lower() and cwd_norm:
         return "~"
-    parts = [p for p in Path(norm).parts if p not in (os.sep, "/")]
-    if not parts:
+    raw_parts = [p for p in cwd_norm.split("/") if p]
+    # Strip Windows drive root like "C:" when deeper segments exist
+    if len(raw_parts) > 1 and len(raw_parts[0]) == 2 and raw_parts[0][1] == ":":
+        raw_parts = raw_parts[1:]
+    if not raw_parts:
         return "/"
     levels = max(1, min(3, int(levels)))
-    return "/".join(parts[-levels:])
+    return "/".join(raw_parts[-levels:])
 
 
 def read_git_head_fallback(cwd: str) -> str:
@@ -76,6 +79,8 @@ def get_git_info(cwd: str, fallback_branch: str = "", timeout: float = 0.5) -> G
             ["git", "--no-optional-locks", "-C", cwd, "status", "--porcelain=v2", "--branch"],
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            errors="replace",
             timeout=timeout,
             check=False,
         )

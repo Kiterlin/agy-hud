@@ -6,6 +6,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
+from agy_hud.git_info import format_project_path
 from agy_hud.width import adaptive_bar_width, pad_right_width, strip_ansi, truncate_plain, visible_width
 
 
@@ -32,6 +33,12 @@ class TestWidth(unittest.TestCase):
         self.assertEqual(adaptive_bar_width(100), 10)
         self.assertEqual(adaptive_bar_width(80), 6)
         self.assertEqual(adaptive_bar_width(50), 4)
+
+    def test_format_project_path_cross_platform(self) -> None:
+        self.assertEqual(format_project_path(r"C:\Users\dev\projects\agy-hud", 1), "agy-hud")
+        self.assertEqual(format_project_path(r"C:\Users\dev\projects\agy-hud", 2), "projects/agy-hud")
+        self.assertEqual(format_project_path("/home/dev/projects/agy-hud", 1), "agy-hud")
+        self.assertEqual(format_project_path("/home/dev/projects/agy-hud", 2), "projects/agy-hud")
 
 
 if __name__ == "__main__":
