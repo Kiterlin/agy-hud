@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 278" width="920" height="278" role="img" aria-label="AGY HUD Light Preview (Catppuccin Latte)">
+  <defs>
+    <style>
+      .mono { font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 13.5px; }
+      .title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; font-weight: 600; }
+      .bold { font-weight: 700; }
+    </style>
+    <filter id="shadowLight" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#4C4F69" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+  <!-- Terminal window (Catppuccin Latte #EAECF0) -->
+  <rect x="12" y="10" width="896" height="254" rx="12" fill="#EAECF0" stroke="#CCD0DA" stroke-width="1.5" filter="url(#shadowLight)"/>
+  <!-- Titlebar -->
+  <path d="M 12 22 Q 12 10 24 10 L 896 10 Q 908 10 908 22 L 908 42 L 12 42 Z" fill="#DCE0E8"/>
+  <circle cx="32" cy="26" r="5.5" fill="#D20F39"/>
+  <circle cx="50" cy="26" r="5.5" fill="#DF8E1D"/>
+  <circle cx="68" cy="26" r="5.5" fill="#40A02B"/>
+  <text x="460" y="30" text-anchor="middle" fill="#5C5F77" class="title">agy — Antigravity CLI · Catppuccin Latte (Light Auto-Adapted)</text>
+
+  <!-- Simulated prompt box -->
+  <line x1="28" y1="62" x2="892" y2="62" stroke="#BCC0CC" stroke-width="1"/>
+  <text x="32" y="84" class="mono" fill="#8839EF">&gt; </text>
+  <text x="50" y="84" class="mono" fill="#4C4F69">Refactor the status line renderer and add live subagent tracking</text>
+  <rect x="572" y="71" width="8" height="16" fill="#8839EF" opacity="0.85"/>
+  <line x1="28" y1="98" x2="892" y2="98" stroke="#BCC0CC" stroke-width="1"/>
+
+  <!-- Line 1: Model + Effort | Project + Git | Title -->
+  <text x="32" y="124" class="mono" xml:space="preserve"><tspan fill="#8839EF" class="bold">[Gemini 4 Neon ◕ xhigh]</tspan><tspan fill="#9CA0B0"> │ </tspan><tspan fill="#1E66F5" class="bold">agy-hud</tspan><tspan fill="#4C4F69"> </tspan><tspan fill="#7287FD">git:(</tspan><tspan fill="#179299">main</tspan><tspan fill="#FE640B" class="bold">*</tspan><tspan fill="#179299"> ↑1</tspan><tspan fill="#7287FD">)</tspan><tspan fill="#9CA0B0"> │ </tspan><tspan fill="#6C6F85">Build agy-hud plugin</tspan></text>
+
+  <!-- Line 2: Context bar (green) -->
+  <text x="32" y="150" class="mono" xml:space="preserve"><tspan fill="#6C6F85">Context </tspan><tspan fill="#40A02B">██</tspan><tspan fill="#BCC0CC">░░░░░░░░</tspan><tspan fill="#40A02B"> 18%</tspan><tspan fill="#6C6F85"> (189k/1M)</tspan><tspan fill="#9CA0B0"> · </tspan><tspan fill="#179299">cache 92%</tspan><tspan fill="#9CA0B0"> · </tspan><tspan fill="#6C6F85">tok 214k</tspan></text>
+
+  <!-- Line 3: Quota bars (sapphire, column aligned!) -->
+  <text x="32" y="176" class="mono" xml:space="preserve"><tspan fill="#6C6F85">5h      </tspan><tspan fill="#209FB5">█████████</tspan><tspan fill="#BCC0CC">░</tspan><tspan fill="#209FB5"> 85%</tspan><tspan fill="#6C6F85"> (3h 10m)</tspan><tspan fill="#9CA0B0"> │ </tspan><tspan fill="#6C6F85">7d </tspan><tspan fill="#209FB5">███████</tspan><tspan fill="#BCC0CC">░░░</tspan><tspan fill="#209FB5"> 68%</tspan><tspan fill="#6C6F85"> (5d 23h)</tspan></text>
+
+  <!-- Line 4: Tools activity -->
+  <text x="32" y="206" class="mono" xml:space="preserve"><tspan fill="#DF8E1D">◐</tspan><tspan fill="#209FB5"> run_command</tspan><tspan fill="#6C6F85">: python3 -m unittest</tspan><tspan fill="#9CA0B0"> | </tspan><tspan fill="#40A02B">✓</tspan><tspan fill="#4C4F69"> read_file </tspan><tspan fill="#6C6F85">×12</tspan><tspan fill="#9CA0B0"> | </tspan><tspan fill="#40A02B">✓</tspan><tspan fill="#4C4F69"> edit_file </tspan><tspan fill="#6C6F85">×5</tspan><tspan fill="#9CA0B0"> | </tspan><tspan fill="#40A02B">✓</tspan><tspan fill="#4C4F69"> search_web </tspan><tspan fill="#6C6F85">×2</tspan></text>
+
+  <!-- Line 5: Subagent activity -->
+  <text x="32" y="232" class="mono" xml:space="preserve"><tspan fill="#DF8E1D">◐</tspan><tspan fill="#8839EF"> Codebase Researcher</tspan><tspan fill="#6C6F85"> [flash] (14s)</tspan></text>
+</svg>

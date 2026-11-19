@@ -1,0 +1,54 @@
+{
+  "cwd": "/home/developer/projects/agy-hud",
+  "session_id": "demo-session-001",
+  "conversation_id": "demo-session-001",
+  "model": {
+    "id": "Gemini 4 Neon (XHigh)",
+    "display_name": "Gemini 4 Neon (XHigh)",
+    "effort": "xhigh"
+  },
+  "workspace": {
+    "current_dir": "/home/developer/projects/agy-hud",
+    "project_dir": "/home/developer/projects/agy-hud",
+    "branch": "main"
+  },
+  "context_window": {
+    "total_input_tokens": 57293,
+    "total_output_tokens": 13197,
+    "context_window_size": 1048576,
+    "used_percentage": 5.46,
+    "remaining_percentage": 94.54,
+    "current_usage": {
+      "input_tokens": 5189,
+      "output_tokens": 128,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 49095
+    }
+  },
+  "quota": {
+    "gemini-5h": {
+      "remaining_fraction": 0.852,
+      "reset_in_seconds": 11400
+    },
+    "gemini-weekly": {
+      "remaining_fraction": 0.684,
+      "reset_in_seconds": 515336
+    },
+    "3p-5h": {
+      "remaining_fraction": 0.92,
+      "reset_in_seconds": 16200
+    },
+    "3p-weekly": {
+      "remaining_fraction": 0.78,
+      "reset_in_seconds": 432000
+    }
+  },
+  "agent_state": "tool_use",
+  "sandbox": {
+    "enabled": false
+  },
+  "plan_tier": "Google AI Pro",
+  "tool_confirmation_pending": false,
+  "conversation_title": "Build agy-hud plugin",
+  "terminal_width": 120
+}

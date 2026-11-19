@@ -1,0 +1,21 @@
+{
+  "name": "agy-hud",
+  "displayName": "AGY HUD",
+  "version": "0.1.0",
+  "description": "A claude-hud inspired real-time status line HUD for Antigravity CLI showing model, reasoning effort, git status, context usage, quota bars, and live tool/subagent activity.",
+  "logo": "assets/logo.svg",
+  "suggestedPrompts": [
+    "Set up and enable the agy-hud status line for Antigravity CLI",
+    "Configure agy-hud layout, theme, language, and visible modules",
+    "Preview how agy-hud looks across light/dark themes and terminal widths"
+  ],
+  "author": {
+    "name": "Kiterlin",
+    "url": "https://github.com/Kiterlin"
+  },
+  "homepage": "https://github.com/Kiterlin/agy-hud",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kiterlin/agy-hud"
+  }
+}
